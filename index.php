@@ -149,8 +149,9 @@ if (isset($_SESSION["user_id"])) {
                     <form method="post" action="index.php" class="d-flex flex-column row-gap-20">
                         <?php foreach ($categories as $category): ?>
                             <div class=" option">
-                                <input type="checkbox" name="category">
-                                <label id="movies"><?php echo $category["category_name"]; ?></label>
+                                <input type="checkbox" name="category"
+                                    value="<?php echo $category["category_name"]; ?>">
+                                <label><?php echo $category["category_name"]; ?></label>
                             </div>
                         <?php endforeach; ?>
                         <div class="option d-flex gap-20">

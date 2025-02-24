@@ -2,8 +2,9 @@
 if ($Posts): ?>
     <?php foreach ($Posts as $Post): ?><!--entolh gia na apofuge bug ean den uparxei estw kai ena Post -->
         <!-- Arxh gia kathe Post pou uparxei -->
-        <div class=" blog-content d-flex flex-column row-gap-50 my-5  " id="blog-content">
-            <div class="relative blog-box shadow-primary rounded-5 p-4 shadow-lg">
+        <div class=" blog-content d-flex flex-column row-gap-50 my-5  " id="blog-content"
+            data-categorized="<?php echo $Post["category_name"]; ?>">
+            <div class=" relative blog-box shadow-primary rounded-5 p-4 shadow-lg">
                 <?php if (isset($user["user_id"]) && $Post["user_id"] === $user["user_id"]): ?>
                     <div class="settings absolute d-flex flex-column">
                         <i class="fa-solid fa-caret-down post-settings"></i>
