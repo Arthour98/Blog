@@ -32,7 +32,7 @@ if(afterY>beforeY)
 }
 
 let create_post_btn=document.querySelector("#create-post");
-let blog_content=document.querySelector("#blog-content");
+let blog_content=document.querySelectorAll(".blog-content");
 let cancel_post_btn=document.querySelector("#cancel-post");
 let form_post_blog=document.querySelector("#creation-post");
 
@@ -228,6 +228,32 @@ edit_submit.forEach((button,index)=>
   })
   })
   ///////////////////////////////
+
+  //filtro//
+  
+   
+   const filterButton=document.getElementById('filter');
+   const resetButton=document.getElementById('reset');
+
+   resetButton.addEventListener("click",(e)=>
+  {
+  e.preventDefault();
+  })
+
+   filterButton.addEventListener('click',(e)=>
+  {
+    e.preventDefault();
+
+    const selectedCategories=
+    Array.from(document.querySelectorAll("input.category-input:checked"))
+    .map(checkbox=>checkbox.value);
+    blog_content.forEach(content=>
+    {
+
+  });
+  })
+
+
 
 
 

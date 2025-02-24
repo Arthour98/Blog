@@ -148,15 +148,16 @@ if (isset($_SESSION["user_id"])) {
                     </h3>
                     <form method="post" action="index.php" class="d-flex flex-column row-gap-20">
                         <?php foreach ($categories as $category): ?>
-                            <div class=" option">
+                            <div class="option">
                                 <input type="checkbox" name="category"
+                                    class="category-input"
                                     value="<?php echo $category["category_name"]; ?>">
                                 <label><?php echo $category["category_name"]; ?></label>
                             </div>
                         <?php endforeach; ?>
                         <div class="option d-flex gap-20">
-                            <button type="submit" name="filter_category" class="btn btn-success align-self-end ">FILTER</button>
-                            <button type="submit" name="reset_category" class="btn btn-primary ">RESET</button>
+                            <button type="submit" id="filter" name="filter_category" class="btn btn-success align-self-end ">FILTER</button>
+                            <button type="submit" id="reset" name="reset_category" class="btn btn-primary ">RESET</button>
                         </div>
 
                     </form>
