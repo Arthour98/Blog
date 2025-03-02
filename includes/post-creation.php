@@ -1,4 +1,4 @@
-<div class="creation-post d-flex justify-content-center align-items-center py-2 mt-3" id="creation-post">
+<div class="creation-post d-none justify-content-center align-items-center py-2 mt-3" id="creation-post">
     <form id="post-blog" action="index.php" method="POST">
         <div class="d-flex align-items-center gap-20">
             <i class="fa-solid fa-user  border border-3 border-success  p-3 rounded-5

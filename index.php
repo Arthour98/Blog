@@ -132,7 +132,7 @@ if (isset($_SESSION["user_id"])) {
 <div class="container-fluid m-0 p-0 ">
     <div class="row height-fill">
         <!--filtro col-->
-        <div class="filter-col col-xxl-2 col-xl-3 col-lg-4 col-md-5 col-sm-12  p-0">
+        <div class="filter-col col-xxl-2 col-xl-4  col-lg-4  col-md-5 col-sm-12  p-0">
             <div class="blog-filter d-flex flex-column justify-content-end  row-gap-20 p-5 ">
                 <h3>Search
                     <div class="option d-flex ">
@@ -148,15 +148,15 @@ if (isset($_SESSION["user_id"])) {
                     </h3>
                     <form method="post" action="index.php" class="d-flex flex-column row-gap-20">
                         <?php foreach ($categories as $category): ?>
-                            <div class="option">
+                            <div class="option d-flex flex-100 align-items center gap-5">
                                 <input type="checkbox" name="category"
                                     class="category-input"
                                     value="<?php echo $category["category_name"]; ?>">
-                                <label><?php echo $category["category_name"]; ?></label>
+                                <label class="form-check-control text-break fs-5"><?php echo $category["category_name"]; ?></label>
                             </div>
                         <?php endforeach; ?>
                         <div class="option d-flex gap-20">
-                            <button type="submit" id="filter" name="filter_category" class="btn btn-success align-self-end ">FILTER</button>
+                            <button type="submit" id="filter" name="filter_category" class="btn btn-primary align-self-end ">FILTER</button>
                             <button type="submit" id="reset" name="reset_category" class="btn btn-primary ">RESET</button>
                         </div>
 
@@ -167,7 +167,7 @@ if (isset($_SESSION["user_id"])) {
         <!--telos filtrou-->
 
 
-        <div class=" col-xxl-9 col-xl-8 col-lg-7 col-md-6 col-sm-12  px-5 pt-5 ">
+        <div class=" col-xxl-8 col-xl-8 col-lg-7  col-md-6 col-sm-12  px-5 pt-5 ">
             <!-- block gia dhmiougeia enos POST ean uparxei sundedemenos xrhsths-->
             <?php if (isset($_SESSION["user_id"])): ?>
                 <div class="create-post">

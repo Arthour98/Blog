@@ -32,7 +32,7 @@ if(afterY>beforeY)
 }
 
 let create_post_btn=document.querySelector("#create-post");
-let blog_content=document.querySelectorAll(".blog-content");
+let blog_content=document.querySelectorAll("#blog-content");
 let cancel_post_btn=document.querySelector("#cancel-post");
 let form_post_blog=document.querySelector("#creation-post");
 
@@ -47,20 +47,14 @@ form_post_blog.classList.remove('d-none');
 form_post_blog.classList.add('d-flex');
 }
 
-
-hideCreationForm();
-
 create_post_btn.addEventListener("click",function()
 {
-blog_content.classList.add("d-none");
 cancel_post_btn.style.display="block";
 showCreationForm();
 });
 
 cancel_post_btn.addEventListener("click",function()
 {
-blog_content.classList.remove('d-none');
-blog_content.classList.add('d-flex')
 cancel_post_btn.style.display="none";
 hideCreationForm();
 })
@@ -238,6 +232,38 @@ edit_submit.forEach((button,index)=>
    resetButton.addEventListener("click",(e)=>
   {
   e.preventDefault();
+
+  const selectedCategories=
+  Array.from(document.querySelectorAll("input.category-input:checked"))
+  .map(checkbox=>checkbox.checked=false);
+  
+
+
+  blog_content.forEach(content=>
+  {
+    if(content.classList.contains("d-none"))
+      {
+        content.classList.remove("d-none");
+        content.style.scale=0;
+        content.style.filter="blur(6px)";
+      }
+
+      let scale=0;
+      let blurEffect=parseFloat(getComputedStyle(content)
+      .filter.match(/blur\((\d+\)px)/)?.[1]||6);
+    function animate()
+    {
+     if(scale<1 || blurEffect>0)
+     {
+      scale+=0.01;
+      blurEffect-=0.08;
+      content.style.scale=`${scale}`;
+      content.style.filter=`blur(${blurEffect}px)`;
+      requestAnimationFrame(animate);
+     }}
+animate();
+})
+
   })
 
    filterButton.addEventListener('click',(e)=>
@@ -247,11 +273,49 @@ edit_submit.forEach((button,index)=>
     const selectedCategories=
     Array.from(document.querySelectorAll("input.category-input:checked"))
     .map(checkbox=>checkbox.value);
-    blog_content.forEach(content=>
-    {
 
-  });
-  })
+    blog_content.forEach(blog=>
+    {
+    blog.classList.add("d-none");
+    blog.style.filter="blur(6px)";
+    blog.style.scale="0"})
+   
+    
+    for(let i=0;i<blog_content.length;i++)
+    {
+    if(selectedCategories.includes(blog_content[i].getAttribute("data-categorized")))
+    {
+      blog_content[i].classList.remove("d-none");
+      let scale=0;
+      let blurEffect=parseFloat(getComputedStyle(blog_content[i])
+      .filter.match(/blur\((\d+)px\)/)?.[1] || 6);
+     function animate(){
+      if(scale<1 || blurEffect>0)
+      {
+        scale+=0.01;
+        blurEffect-=0.08;
+
+        scale = Math.min(scale, 1);
+        blurEffect = Math.max(blurEffect, 0);
+
+        blog_content[i].style.scale=`${scale}`;
+        blog_content[i].style.filter=`blur(${blurEffect}px)`;
+        requestAnimationFrame(animate);
+      }
+      
+    }
+        
+        animate();
+
+
+     
+        
+          
+     
+      
+  }}})
+
+
 
 
 

@@ -164,6 +164,36 @@ color:white;
 font-size:25px;
 font-weight:bold;
 }
+
+input.category-input
+{
+appearance: none;
+min-width:50px;
+min-height:50px;
+border:1px solid white;
+background: linear-gradient(45deg,red,black,transparent);
+border-radius:10px;
+cursor:pointer;
+}
+input.category-input:hover
+{
+opacity:0.5;
+scale:1.1;
+}
+input.category-input:checked
+{
+appearance: auto;
+accent-color:green;
+}
+button#filter:active,button#reset:active
+{
+background-color:green;
+scale:1.3;
+}
+
+
+
+
 .fa-solid.fa-thumbs-up
 {
 cursor:pointer;
@@ -293,5 +323,14 @@ resize:none;
 button.like,button.dislike
 {
 border-radius:20px;
+border:none;
 background-color:inherit;
+}
+button.like
+{
+color:green;
+}
+button.dislike
+{
+color:red;
 }
