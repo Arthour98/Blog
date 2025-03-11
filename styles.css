@@ -417,8 +417,7 @@ position:relative;
 display:flex;
 flex-direction: column;
 align-items:center;
-justify-content:center;
-box-sizing: border-box;
+justify-content:end;
 padding:20px;
 }
 
@@ -434,37 +433,29 @@ position:absolute;
 animation:snake-ball 4s linear infinite;
 
 }
-@keyframes snake
-{
-0%
-{
-border-top:2px solid var(--border-color, green);
-border-right:2px solid var(--border-color, green);
-border-bottom:2px solid var(--border-color, green);
-border-left:2px solid var(--border-color, green);
-}
-25%
-{
-border-left:2px solid var(--border-color, green);
-border-top:10px solid var(--border-color, green);
-
-}
-50%
-{   border-top:2px solid var(--border-color, green);
-    border-right:10px solid var(--border-color, green);
-}
-75%
-{
-    border-top:2px solid var(--border-color, green);
-    border-right:2px solid var(--border-color, green);
-    border-bottom:10px solid var(--border-color, green);
-}
-100%
-{    border-top:2px solid var(--border-color, green);
-    border-right:2px solid var(--border-color, green);
-    border-bottom:2px solid var(--border-color, green);
-    border-left:10px solid var(--border-color, green);
-}
+@keyframes snake {
+    0% {
+        box-shadow: inset 0px 0px 0px 2px var(--border-color, green);
+    }
+    25% {
+        box-shadow: inset 10px 0px 0px 2px var(--border-color, green), /* Left */
+                    inset 0px -10px 0px 2px var(--border-color, green); /* Top */
+    }
+    50% {
+        box-shadow: inset 0px -2px 0px 2px var(--border-color, green), /* Top */
+                    inset -10px 0px 0px 2px var(--border-color, green); /* Right */
+    }
+    75% {
+        box-shadow: inset 0px -2px 0px 2px var(--border-color, green), /* Top */
+                    inset 0px 0px 0px 2px var(--border-color, green), /* Right */
+                    inset 0px 10px 0px 2px var(--border-color, green); /* Bottom */
+    }
+    100% {
+        box-shadow: inset 0px -2px 0px 2px var(--border-color, green), /* Top */
+                    inset 0px 0px 0px 2px var(--border-color, green), /* Right */
+                    inset 0px 0px 0px 2px var(--border-color, green), /* Bottom */
+                    inset 10px 0px 0px 2px var(--border-color, green); /* Left */
+    }
 }
 @keyframes snake-ball
 {

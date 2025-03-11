@@ -443,6 +443,8 @@ view_image.addEventListener('click',()=>
 function ADD_FORM()
 {
 console.log("ADD_FORM function called");
+if(!add_image_form)
+{
 const add_image_form=document.createElement("form");
 const file_button=document.createElement("button");
 const icon=document.createElement("i");
@@ -450,6 +452,7 @@ const icon=document.createElement("i");
 file_button.type="file";
 icon.classList.add("fa-solid","fa-circle-arrow-up");
 add_image_form.style.background="transparent";
+
 file_button.style.width="fit-content";
 file_button.style.height="fit-content";
 file_button.style.display = "flex";
@@ -458,12 +461,14 @@ file_button.style.justifyContent = "center";
 file_button.style.background="transparent";
 file_button.style.border="none";
 icon.style.flex="100%";
-icon.style.scale="5";
-
+icon.style.fontSize="50px";
+icon.style.color="Blue";
 
 file_button.appendChild(icon);
 add_image_form.appendChild(file_button);
 modification_container.appendChild(add_image_form);
+}
+else return;
 }
   }
 
