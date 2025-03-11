@@ -132,60 +132,66 @@ if (isset($_SESSION["user_id"])) {
 <div class="container-fluid m-0 p-0 ">
     <div class="row height-fill">
         <!--filtro col-->
-        <div class="filter-col col-xxl-2 col-xl-4  col-lg-4  col-md-5 col-sm-12  p-0">
-            <div class="blog-filter d-flex flex-column justify-content-end  row-gap-20 p-5 ">
-                <h3>Search
-                    <div class="option d-flex ">
-                        <form action="index.php" method="post">
-                            <div class="d-flex  gap-20">
-                                <input type="search" name="search" class="form-control">
-                                <input type="submit" value="Search" class="btn btn-primary rounded">
-                            </div>
-                        </form>
-                    </div>
-                    <h3>
-                        Choose Category
-                    </h3>
-                    <form method="post" action="index.php" class="d-flex flex-column row-gap-20">
-                        <?php foreach ($categories as $category): ?>
-                            <div class="option d-flex flex-100 align-items center gap-5">
-                                <input type="checkbox" name="category"
-                                    class="category-input"
-                                    value="<?php echo $category["category_name"]; ?>">
-                                <label class="form-check-control text-break fs-5"><?php echo $category["category_name"]; ?></label>
-                            </div>
-                        <?php endforeach; ?>
-                        <div class="option d-flex gap-20">
-                            <button type="submit" id="filter" name="filter_category" class="btn btn-primary align-self-end ">FILTER</button>
-                            <button type="submit" id="reset" name="reset_category" class="btn btn-primary ">RESET</button>
+        <?php if (isset($user)): ?>
+            <div class="filter-col col-xxl-2 col-xl-4  col-lg-4  col-md-5 col-sm-12  p-0 text-light">
+                <div class="blog-filter d-flex flex-column justify-content-end  row-gap-20 p-5 ">
+                    <h3>Search
+                        <div class="option d-flex ">
+                            <form action="index.php" method="post">
+                                <div class="d-flex  gap-20">
+                                    <input type="search" name="search" class="form-control">
+                                    <input type="submit" value="Search" class="btn btn-primary rounded">
+                                </div>
+                            </form>
                         </div>
+                        <h3>
+                            Choose Category
+                        </h3>
+                        <form method="post" action="index.php" class="d-flex flex-column row-gap-20">
+                            <?php foreach ($categories as $category): ?>
+                                <div class="option d-flex flex-100 align-items center gap-5">
+                                    <input type="checkbox" name="category"
+                                        class="category-input"
+                                        value="<?php echo $category["category_name"]; ?>">
+                                    <label class="form-check-control text-break fs-5"><?php echo $category["category_name"]; ?></label>
+                                </div>
+                            <?php endforeach; ?>
+                            <div class="option d-flex gap-20">
+                                <button type="submit" id="filter" name="filter_category" class="btn btn-primary align-self-end ">FILTER</button>
+                                <button type="submit" id="reset" name="reset_category" class="btn btn-primary ">RESET</button>
+                            </div>
 
-                    </form>
+                        </form>
 
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
         <!--telos filtrou-->
 
+        <?php if (isset($_SESSION["user_id"])): ?>
+            <div class=" col-xxl-8 col-xl-8 col-lg-7  col-md-6 col-sm-12  px-5 pt-5 ">
+            <?php else: ?>
+                <div class=" col-xxl-12 col-xl-12 col-lg-12  col-md-12 col-sm-12  px-5 pt-5 ">
+                <?php endif; ?>
+                <!-- block gia dhmiougeia enos POST ean uparxei sundedemenos xrhsths-->
+                <?php if (isset($_SESSION["user_id"])): ?>
+                    <div class="create-post">
+                        <button type="button" id="create-post" class="btn btn-primary rounded-4">
+                            <i class="fa-solid fa-square-plus"></i>
+                            Create Post
+                        </button>
+                        <button type="button" class="btn btn-danger rounded-4 mt-3" id="cancel-post">Cancel</button>
+                    </div>
+                    <!-- forma dhmiourgias blog -->
+                    <?php include "includes/post-creation.php"; ?>
+                    <!----->
+                <?php endif; ?>
 
-        <div class=" col-xxl-8 col-xl-8 col-lg-7  col-md-6 col-sm-12  px-5 pt-5 ">
-            <!-- block gia dhmiougeia enos POST ean uparxei sundedemenos xrhsths-->
-            <?php if (isset($_SESSION["user_id"])): ?>
-                <div class="create-post">
-                    <button type="button" id="create-post" class="btn btn-primary rounded-4">
-                        <i class="fa-solid fa-square-plus"></i>
-                        Create Post
-                    </button>
-                    <button type="button" class="btn btn-danger rounded-4 mt-3" id="cancel-post">Cancel</button>
+                <!--olo to code tou content se mia gramh-->
+                <?php include "includes/post.php"; ?>
+                <!---->
+
                 </div>
-            <?php endif; ?>
-            <!-- forma dhmiourgias blog -->
-            <?php include "includes/post-creation.php"; ?>
-            <!----->
-            <!--olo to code tou content se mia gramh-->
-            <?php include "includes/post.php"; ?>
-            <!---->
-
-        </div>
+            </div>
     </div>
-</div>
-<?php include_once "includes/footer.php" ?>
+    <?php include_once "includes/footer.php" ?>

@@ -18,19 +18,25 @@ return new bootstrap.Tooltip(tooltipTriggerEl);
 
 let menu=document.querySelector(".menu");
 
-function fixedMenu()
-{
-let beforeY=window.scrollY;
-window.addEventListener("scroll",function()
-{
-let afterY=window.scrollY;
-if(afterY>beforeY)
-{
-  
-}
-})
-}
+let body=document.body;
+let page=window.location.pathname;
 
+
+
+
+
+
+
+
+
+
+
+
+
+if(page.endsWith("index.php"))
+  {
+  body.style.backgroundImage="url('/images/backgound-forum.jpeg')";
+  
 let create_post_btn=document.querySelector("#create-post");
 let blog_content=document.querySelectorAll("#blog-content");
 let cancel_post_btn=document.querySelector("#cancel-post");
@@ -305,17 +311,161 @@ animate();
       
     }
         
-        animate();
-
-
-     
-        
-          
-     
-      
+        animate();   
   }}})
+  }
+////////////Gallery////////
+/////menu-options/////////
+if(page.endsWith("gallery.php"))
+  {
+  body.style.backgroundImage="url('/images/background-gallery.jpeg')";
+  body.style.backgroundSize="cover";
+  body.style.backgroundRepeat="no-repeat";
+  
+  
+const menu_options=document.querySelector("#menu-options");
+const hamburger=document.querySelector('.menu-icon');
+
+hamburger.addEventListener('click',()=>
+{
+menu_options.classList.toggle('w-50');
+menu_options.classList.toggle('w-0');
+if(menu_options.classList.contains("w-50"))
+{
+  hamburger.classList.replace("fa-bars","fa-circle-xmark"); 
+}
+else
+{
+  hamburger.classList.replace("fa-circle-xmark","fa-bars");  
+}
+});
+
+///////////modification-container/////////////
+const modification_container=document.querySelector('.modification-container');
+const dot=document.querySelector('.modification-container::before');
+const add_image=document.querySelector('.add-image');
+const delete_image=document.querySelector('.delete-image');
+const edit_image=document.querySelector('.edit-image');
+const view_image=document.querySelector('.view-image');
+
+function defineColor(color)
+{
+  modification_container.style.setProperty("--border-color",color);
+  modification_container.style.setProperty("--dot-color",color)
+}
+function checkColor(color)
+{
+const val=getComputedStyle(modification_container).getPropertyValue("--border-color");
+if(val===color)
+{
+  return true;
+}
+}
+
+add_image.addEventListener('click',()=>
+{
+  const color="green";
+  
+  if(modification_container.classList.contains("d-none"))
+    {
+     modification_container.classList.remove('d-none');
+     defineColor(color);
+     ADD_FORM();
+     return;
+    }
+   if(!checkColor(color) )
+      {
+        defineColor(color);
+        return;     
+      }
+   modification_container.classList.add("d-none");
+
+});
 
 
+
+delete_image.addEventListener('click',()=>
+{
+  const color="red";
+  if(modification_container.classList.contains("d-none"))
+    {
+     modification_container.classList.remove('d-none');
+     defineColor(color);
+     return;
+    }
+   if(!checkColor(color) )
+      {
+        defineColor(color);
+        return;     
+      }
+   modification_container.classList.add("d-none");
+     
+});
+
+
+
+edit_image.addEventListener('click',()=>
+{
+  color="yellow";
+  if(modification_container.classList.contains("d-none"))
+    {
+     modification_container.classList.remove('d-none');
+     defineColor(color);
+     return;
+    }
+   if(!checkColor(color) )
+      {
+        defineColor(color);
+        return;     
+      }
+   modification_container.classList.add("d-none");
+      
+});
+
+view_image.addEventListener('click',()=>
+{
+  const color="cyan";
+  if(modification_container.classList.contains("d-none"))
+    {
+     modification_container.classList.toggle('d-none');
+     defineColor(color);
+     return;
+    }
+   if(!checkColor(color) )
+      {
+        defineColor(color);
+        return;     
+      }
+   modification_container.classList.add("d-none");
+     
+});
+/////////////////modifications forms///////////////////
+function ADD_FORM()
+{
+console.log("ADD_FORM function called");
+const add_image_form=document.createElement("form");
+const file_button=document.createElement("button");
+const icon=document.createElement("i");
+
+file_button.type="file";
+icon.classList.add("fa-solid","fa-circle-arrow-up");
+add_image_form.style.background="transparent";
+file_button.style.width="fit-content";
+file_button.style.height="fit-content";
+file_button.style.display = "flex";
+file_button.style.alignItems = "center";
+file_button.style.justifyContent = "center";
+file_button.style.background="transparent";
+file_button.style.border="none";
+icon.style.flex="100%";
+icon.style.scale="5";
+
+
+file_button.appendChild(icon);
+add_image_form.appendChild(file_button);
+modification_container.appendChild(add_image_form);
+}
+  }
 
 
 
