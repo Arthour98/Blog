@@ -347,6 +347,21 @@ const add_image=document.querySelector('.add-image');
 const delete_image=document.querySelector('.delete-image');
 const edit_image=document.querySelector('.edit-image');
 const view_image=document.querySelector('.view-image');
+const add_container=document.querySelector(".adding-container");
+const delete_container=document.querySelector(".delete-container");
+
+function defineContainer(color)
+{
+ container=[add_container,delete_container];
+  switch(color)
+  {
+    case "green":add_container.classList.remove("d-none");
+                  delete_container.classList.add("d-none");
+                  break;
+    case "red":add_container.classList.add("d-none");
+              delete_container.classList.remove("d-none");
+              break;
+  }}  
 
 function defineColor(color)
 {
@@ -370,12 +385,13 @@ add_image.addEventListener('click',()=>
     {
      modification_container.classList.remove('d-none');
      defineColor(color);
-     ADD_FORM();
+     defineContainer(color)
      return;
     }
    if(!checkColor(color) )
       {
         defineColor(color);
+        defineContainer(color)
         return;     
       }
    modification_container.classList.add("d-none");
@@ -391,11 +407,13 @@ delete_image.addEventListener('click',()=>
     {
      modification_container.classList.remove('d-none');
      defineColor(color);
+     defineContainer(color)
      return;
     }
    if(!checkColor(color) )
       {
         defineColor(color);
+        defineContainer(color)
         return;     
       }
    modification_container.classList.add("d-none");
@@ -439,41 +457,153 @@ view_image.addEventListener('click',()=>
    modification_container.classList.add("d-none");
      
 });
-/////////////////modifications forms///////////////////
-function ADD_FORM()
+/////////////////delete_mod///////////////////
+const image_input=document.getElementById("image-input");
+
+image_input.addEventListener('change',(e)=>
 {
-console.log("ADD_FORM function called");
-if(!add_image_form)
+let file=e.target.files[0];
+if(file)
 {
-const add_image_form=document.createElement("form");
-const file_button=document.createElement("button");
-const icon=document.createElement("i");
-
-file_button.type="file";
-icon.classList.add("fa-solid","fa-circle-arrow-up");
-add_image_form.style.background="transparent";
-
-file_button.style.width="fit-content";
-file_button.style.height="fit-content";
-file_button.style.display = "flex";
-file_button.style.alignItems = "center";
-file_button.style.justifyContent = "center";
-file_button.style.background="transparent";
-file_button.style.border="none";
-icon.style.flex="100%";
-icon.style.fontSize="50px";
-icon.style.color="Blue";
-
-file_button.appendChild(icon);
-add_image_form.appendChild(file_button);
-modification_container.appendChild(add_image_form);
+let reader=new FileReader();
+let image_placeholder=document.getElementById("image-for-adding");
+reader.onload=function(ev)
+{
+image_placeholder.src=ev.target.result;
 }
-else return;
+reader.readAsDataURL(file);
 }
+});
+
+const delete_placeholder=document.getElementById("delete-placeholder");
+const gallery_images=document.querySelectorAll(".gallery-images");
+function Allow_drop(event)
+{
+  event.preventDefault();
+  event.dataTransfer.dropEffect="copy";
+}
+
+function getContent(event)
+{
+  
+  let data=event.dataTransfer.getData("image");
+  let DraggedElem=document.getElementById(data);
+  let clonedElem=DraggedElem.cloneNode();
+
+  event.target.appendChild(clonedElem);
+
+}
+
+function setContent(event)
+{
+event.dataTransfer.setData("image",event.target.id);
+event.dataTransfer.effectAllowed = "copy";
+}
+
+gallery_images.forEach(image=>
+{
+image.addEventListener("dragstart",setContent);
+});
+delete_placeholder.addEventListener("dragover",Allow_drop);
+delete_placeholder.addEventListener("drop",getContent);
+
+
+if(delete_container)
+{
+ async function getImageATTR()
+ {
+  let img ;
+  while(!img)
+  {
+    img = delete_placeholder?.querySelector("img")
+    if(img)
+    {
+      return img.getAttribute("data-image-id");
+    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
+ }}
+
+(async()=>
+{
+  const image=await getImageATTR();
+
+  if(image)
+  {
+  const input_delete=document.querySelector("form#delete_image input[type=hidden]");
+  input_delete.value=image;
   }
+})();
+}
+///////////panel/////////////
+
+gallery_images.forEach(image=>
+{
+image.addEventListener('click',()=>
+{
+let target_image=document.getElementById('target-image');
+let image_id=image.getAttribute("data-image-id");
+target_image.src=image.src;
+target_image.setAttribute("data-image-id",image_id);
+})
+});
+
+let comment_count=document.getElementById("target-comments").querySelectorAll('p').length;
+let comment_count_context=document.getElementById('comment_count');
+const toggle_comments_button=document.getElementById("toggle-comments");
+let allComments=false;
+
+comment_count_context.textContent+=comment_count.toString();
+
+function hidecomments()
+{
+toggle_comments_button.innerText="Show more";
+let comments=document.querySelectorAll("#target-comments > p");
+comments.forEach((comment,index)=>
+{
+if(index<5)
+{
+comment.classList.remove('d-none');
+}
+else
+{
+comment.classList.add("d-none");
+}
+
+})}
+hidecomments();
+
+function showAllComments()
+{
+allComments=true;
+toggle_comments_button.innerText="Show less";
+let comments=document.querySelectorAll('#target-comments > p');
+comments.forEach(comment=>
+{
+comment.classList.remove("d-none");
+})}
+
+
+toggle_comments_button.addEventListener("click",function()
+{
+if(allComments)
+{
+hidecomments();
+allComments=false;
+}
+else if(!allComments)
+{
+  showAllComments();
+}
+console.log(allComments);
+})
 
 
 
+
+
+
+
+}
 
 
 

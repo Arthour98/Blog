@@ -8,7 +8,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/ba8d4ce27c.js" crossorigin="anonymous"></script>
-<script src="../script.js"></script>
+<script src="../script.js" defer></script>
 </body>
 
 </html>
