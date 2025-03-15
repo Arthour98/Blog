@@ -542,8 +542,14 @@ image.addEventListener('click',()=>
 {
 let target_image=document.getElementById('target-image');
 let image_id=image.getAttribute("data-image-id");
+let like_image_id=document.getElementById('like-input');
+let dislike_image_id=document.getElementById('dislike-input');
+
 target_image.src=image.src;
 target_image.setAttribute("data-image-id",image_id);
+like_image_id.setAttribute("value",image_id);
+dislike_image_id.setAttribute("value",image_id);
+
 })
 });
 

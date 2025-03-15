@@ -145,16 +145,14 @@ if (isset($_SESSION["user_id"])) {
             <div class="offcanvas-body d-flex flex-column row-gap-20">
                 <div class="d-flex gap-20 ps-5">
                     <form action="gallery.php" method="POST">
-                        <input type="hidden" name="image_id" value="<?php echo $Post["content_id"]; ?>">
-                        <input type="hidden" name="user_id" value="<?php echo $user["user_id"]; ?>">
+                        <input type="hidden" name="image_id" id="like-input">
                         <input type="hidden" name="status" value="like">
                         <button type="submit" name="submit_like" class="like">
                             <i class="fa-solid fa-thumbs-up fs-3"></i>
                         </button>
                     </form>
                     <form action="gallery.php" method="POST">
-                        <input type="hidden" name="image_id" value="<?php echo $Post["content_id"]; ?>">
-                        <input type="hidden" name="user_id" value="<?php echo $user["user_id"]; ?>">
+                        <input type="hidden" name="image_id" id="dislike-input">
                         <input type="hidden" name="status" value="dislike">
                         <button type="submit" name="submit_dislike" class="dislike">
                             <i class="fa-regular fa-thumbs-down fs-3"></i>
