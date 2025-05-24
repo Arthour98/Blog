@@ -13,14 +13,19 @@ session_start();
 
 $session = new Session($conn);
 $gallery = new Gallery($conn);
-$images = $gallery->Gallery_view();
+$imgs = $gallery->Gallery_view();
+$images = array_reverse($imgs);
+
+
+
+$comments = $gallery->getComments();
 
 
 if (isset($_SESSION["user_id"])) {
 
     $GLOBALS["user"]  = $session->session_props($_SESSION["user_id"]);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add-image"])) {
         $image_name = $_FILES["add_image"];
         $user_id = $user["user_id"];
 
@@ -36,10 +41,24 @@ if (isset($_SESSION["user_id"])) {
         }
     }
 
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if ($_SERVER["REQUEST_METHOD"] === "POST" &&  isset($_POST["delete-image"])) {
         $image_id = $_POST["image_id"];
         if ($gallery->delete_image($image_id)) {
             $_SESSION["successMessage"] = "Image Deleted Successfully";
+            header("location:gallery.php");
+            exit();
+        }
+    }
+
+
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST" &&  isset($_POST["submit-comment"])) {
+        $image_id = $_POST["image_id"];
+        $user_id = $user["user_id"];
+        $text = $_POST["comment-text"];
+
+        if ($gallery->comment($image_id, $user_id, $text)) {
+            $_SESSION["successMessage"] = "Commented";
             header("location:gallery.php");
             exit();
         }
@@ -59,11 +78,9 @@ if (isset($_SESSION["user_id"])) {
 
         <i class="fa-solid fa-bars cursor-pointer fs-1 menu-icon "></i>
 
-        <div class="btn-group-vertical w-0 h-25" id="menu-options">
+        <div class="btn-group-vertical w-0 h-auto" id="menu-options">
             <button type="button" class="btn btn-primary border border-bottom border-dark add-image">Add-image</button>
             <button type="button" class="btn btn-primary border border-bottom border-dark delete-image">Delete-image</button>
-            <button type="button" class="btn btn-primary border border-bottom border-dark edit-image">Edit-image</button>
-            <button type="button" class="btn btn-primary border border-bottom border-dark view-image">View-images</button>
         </div>
 
         <div class="modification-container d-none ">
@@ -84,20 +101,20 @@ if (isset($_SESSION["user_id"])) {
                         <i class="fa-solid fa-circle-arrow-up upload-icon text-primary "></i>
                     </label>
                     <input type="submit" value="ADD" id="submit-image"
-                        class="btn btn-primary">
+                        class="btn btn-primary" name="add-image">
                 </form>
             </div>
             <!---------Delete mod ----------->
-            <div class="delete-container w-100 flex-100 gap-1 d-none">
-                <div class="border border-1 border-dark rounded-4 w-100 flex-50" id="delete-placeholder">
-
+            <div class="delete-container w-100  flex-100 gap-1 d-none">
+                <div class="border border-1  border-dark rounded-4 w-100 flex-50 d-flex align-items-center justify-content-center relative" id="delete-placeholder">
+                    <h2 class="text-light absolute z-n1">Drag the your image you want to delete there</h2>
                 </div>
 
                 <form id="delete_image" action="gallery.php"
                     method="post" enctype="multipart/form-data"
                     class="d-flex w-100 justify-content-center align-items-center">
                     <input type="hidden" name="image_id" value="">
-                    <input type="submit" value="DELETE" class="btn btn-danger" id="delete_image">
+                    <input type="submit" value="DELETE" class="btn btn-danger" id="delete_image" name="delete-image">
                 </form>
 
             </div>
@@ -123,7 +140,6 @@ if (isset($_SESSION["user_id"])) {
                             draggable="false"
                             <?php else:  ?>draggable="true"
                             <?php endif; ?>>
-
                     </div>
                     <div class="commentary px-2"></div>
                 </div>
@@ -133,58 +149,62 @@ if (isset($_SESSION["user_id"])) {
 
 
     <div class="gallery-panel">
-        <div class="offcanvas offcanvas-end w-25 bg-dark text-light " id="commentary">
+        <div class="offcanvas offcanvas-end w-25 bg-dark text-light vh-100" id="commentary">
             <button type="button" class="btn-close text-reset  "
                 data-bs-dismiss="offcanvas"></button>
             <div class="offcanvas-header d-flex flex-column">
                 <h2 class="offcanvas-title align-center">Panel</h1>
-                    <img src="" id="target-image" class="img-fluid">
+                    <img src="" id="target-image" class="img-fluid h-50vh w-100">
 
             </div>
 
             <div class="offcanvas-body d-flex flex-column row-gap-20">
                 <div class="d-flex gap-20 ps-5">
-                    <form action="gallery.php" method="POST">
+                    <form action="gallery.php" method="POST" id="gallery-like-form">
+                        <input type="hidden" name="user_id" id="user-l-input" value='<?php echo $user["user_id"]; ?>'>
                         <input type="hidden" name="image_id" id="like-input">
-                        <input type="hidden" name="status" value="like">
+                        <input type="hidden" name="status" value="likes" id="like-status">
                         <button type="submit" name="submit_like" class="like">
                             <i class="fa-solid fa-thumbs-up fs-3"></i>
                         </button>
                     </form>
-                    <form action="gallery.php" method="POST">
+                    <p id="likes"></p>
+
+                    <form action="gallery.php" method="POST" id="gallery-dislike-form">
+                        <input type="hidden" name="user_id" id="user-d-input" value='<?php echo $user["user_id"]; ?>'>
                         <input type="hidden" name="image_id" id="dislike-input">
-                        <input type="hidden" name="status" value="dislike">
+                        <input type="hidden" name="status" value="dislikes" id="dislike-status">
                         <button type="submit" name="submit_dislike" class="dislike">
                             <i class="fa-regular fa-thumbs-down fs-3"></i>
                         </button>
                     </form>
+                    <p id="dislikes"></p>
                 </div>
+                <!--comments-->
 
+                <h2 class="text-decoration-underline" id="comment_count">Comments:</h2>
                 <div id="target-comments" class="d-flex flex-column 
                  gap-2 px-5 ">
-                    <h2 class="text-decoration-underline" id="comment_count">Comments:</h2>
-                    <p>dadadadadadasdad</p>
-                    <p>dadadadadadasdad</p>
-                    <p>dadadadadadasdad</p>
-                    <p>dadadadadadasdad</p>
-                    <p>dadadadadadasdad</p>
-                    <p>dadadadadadasdad</p>
-                    <p>dadadadadadasdad</p>
-                    <p>dadadadadadasdad</p>
-                    <h5 id="toggle-comments" class="text-decoration-underline cursor-pointer">Show more</h5>
-                    <form action="gallery.php" method="post" class="form-control bg-dark">
-                        <textarea class="form-control mt-3" id="comment-area">
-                        </textarea>
-                        <div class="d-flex justify-content-end">
-                            <input type="submit" class="rounded-3 mt-3 bg-success value=" value="comment" name="comment">
-                        </div>
-                    </form>
                 </div>
+
+
+
+
+                <h5 id="toggle-comments" class="text-decoration-underline cursor-pointer">Show more</h5>
+                <form action="gallery.php" method="post" class="form-control bg-dark">
+                    <input type="hidden" name="image_id" id="image_commentary_id">
+                    <textarea class="form-control mt-3" id="comment-area" name="comment-text">
+                        </textarea>
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" class="rounded-3 mt-3 bg-success value=" value="comment" name="submit-comment">
+                    </div>
+                </form>
             </div>
-
-
-
         </div>
+
+
+
+    </div>
     </div>
 
 

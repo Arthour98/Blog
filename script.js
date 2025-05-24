@@ -332,11 +332,14 @@ menu_options.classList.toggle('w-50');
 menu_options.classList.toggle('w-0');
 if(menu_options.classList.contains("w-50"))
 {
-  hamburger.classList.replace("fa-bars","fa-circle-xmark"); 
+  hamburger.classList.replace("fa-bars","fa-circle-xmark");
 }
 else
 {
-  hamburger.classList.replace("fa-circle-xmark","fa-bars");  
+  hamburger.classList.replace("fa-circle-xmark","fa-bars");
+  setTimeout(()=>{
+  modification_container.classList.add('d-none');
+  },1000);
 }
 });
 
@@ -345,8 +348,6 @@ const modification_container=document.querySelector('.modification-container');
 const dot=document.querySelector('.modification-container::before');
 const add_image=document.querySelector('.add-image');
 const delete_image=document.querySelector('.delete-image');
-const edit_image=document.querySelector('.edit-image');
-const view_image=document.querySelector('.view-image');
 const add_container=document.querySelector(".adding-container");
 const delete_container=document.querySelector(".delete-container");
 
@@ -422,41 +423,8 @@ delete_image.addEventListener('click',()=>
 
 
 
-edit_image.addEventListener('click',()=>
-{
-  color="yellow";
-  if(modification_container.classList.contains("d-none"))
-    {
-     modification_container.classList.remove('d-none');
-     defineColor(color);
-     return;
-    }
-   if(!checkColor(color) )
-      {
-        defineColor(color);
-        return;     
-      }
-   modification_container.classList.add("d-none");
-      
-});
 
-view_image.addEventListener('click',()=>
-{
-  const color="cyan";
-  if(modification_container.classList.contains("d-none"))
-    {
-     modification_container.classList.toggle('d-none');
-     defineColor(color);
-     return;
-    }
-   if(!checkColor(color) )
-      {
-        defineColor(color);
-        return;     
-      }
-   modification_container.classList.add("d-none");
-     
-});
+
 /////////////////delete_mod///////////////////
 const image_input=document.getElementById("image-input");
 
@@ -489,7 +457,6 @@ function getContent(event)
   let data=event.dataTransfer.getData("image");
   let DraggedElem=document.getElementById(data);
   let clonedElem=DraggedElem.cloneNode();
-
   event.target.appendChild(clonedElem);
 
 }
@@ -535,35 +502,67 @@ if(delete_container)
 })();
 }
 ///////////panel/////////////
-
+let target_image=document.getElementById('target-image');
+target_image.src=null;
 gallery_images.forEach(image=>
 {
 image.addEventListener('click',()=>
 {
-let target_image=document.getElementById('target-image');
 let image_id=image.getAttribute("data-image-id");
 let like_image_id=document.getElementById('like-input');
 let dislike_image_id=document.getElementById('dislike-input');
-
-target_image.src=image.src;
-target_image.setAttribute("data-image-id",image_id);
-like_image_id.setAttribute("value",image_id);
-dislike_image_id.setAttribute("value",image_id);
-
-})
-});
-
-let comment_count=document.getElementById("target-comments").querySelectorAll('p').length;
+let commentary_id=document.getElementById("image_commentary_id");
+const comment_container=document.getElementById("target-comments");
 let comment_count_context=document.getElementById('comment_count');
+comment_count_context.textContent="Comments:";
+
+console.log(image_id);
+fetch('api/getComments.php',
+  {
+    method:"POST",
+    headers:
+    {
+    "Content-Type":"application/x-www-form-urlencoded"
+    },
+    body:JSON.stringify({"image_id":image_id})
+    }
+).then(response=>
+{ 
+return response.json();
+})
+.then(data=>
+{
+comment_container.replaceChildren();
+target_image.src=data[0]["image_name"];
+commentary_id.value=data[0]["image_id"];
+dislike_image_id.setAttribute('value',data[0]["image_id"]);
+like_image_id.setAttribute('value',data[0]["image_id"]);
+target_image.setAttribute("data_img_id",data[0]["image_id"]);
+
+data.forEach(elem=>
+{
+let row=document.createElement('div');
+let userP=document.createElement('p');
+let commentP=document.createElement('p');
+
+row.classList.add("comments-row","d-flex","align-items-start","text-break",
+  "gap-5","border-bottom","border-light");
+commentP.textContent=elem["comment_text"];
+userP.textContent=elem["user_name"];
+commentP.classList.add("flex-33");
+row.appendChild(userP);
+row.appendChild(commentP);
+comment_container.appendChild(row);
+})
+let comment_count=document.getElementById("target-comments").querySelectorAll('div').length;
 const toggle_comments_button=document.getElementById("toggle-comments");
+let comments=document.querySelectorAll('#target-comments > div');
 let allComments=false;
-
 comment_count_context.textContent+=comment_count.toString();
-
+getStatus();
 function hidecomments()
 {
 toggle_comments_button.innerText="Show more";
-let comments=document.querySelectorAll("#target-comments > p");
 comments.forEach((comment,index)=>
 {
 if(index<5)
@@ -576,19 +575,19 @@ comment.classList.add("d-none");
 }
 
 })}
-hidecomments();
+
 
 function showAllComments()
 {
 allComments=true;
 toggle_comments_button.innerText="Show less";
-let comments=document.querySelectorAll('#target-comments > p');
+
 comments.forEach(comment=>
 {
 comment.classList.remove("d-none");
 })}
 
-
+hidecomments();
 toggle_comments_button.addEventListener("click",function()
 {
 if(allComments)
@@ -600,16 +599,84 @@ else if(!allComments)
 {
   showAllComments();
 }
-console.log(allComments);
 })
+});
+})
+});
 
+const like_form=document.getElementById("gallery-like-form");
+const dislike_form=document.getElementById("gallery-dislike-form");
+const likes=document.getElementById('likes');
+const dislikes=document.getElementById("dislikes");
 
-
-
-
-
+function getStatus()
+{
+let img= document.getElementById("target-image");
+let img_id=img.getAttribute('data_img_id');
+fetch("api/getStatus.php",
+  {
+    method:"POST",
+    headers:{"Content-Type":"application/x-www-form-urlencoded"},
+    body:JSON.stringify({image_id:img_id})
+  }).then(response=>{return response.json()})
+  .then(data=>{
+    console.log(data["likes"])
+    likes.textContent=data["likes"];
+    dislikes.textContent=data["dislikes"];
+  })
 
 }
+
+like_form.addEventListener("submit",function(e)
+{
+  e.preventDefault();
+  let user_id=document.getElementById("user-l-input").value;
+  let image_id=document.getElementById("like-input").value;
+  let status=document.getElementById("like-status").value;
+  const formObj={user_id:user_id,image_id:image_id,status:status};
+  console.log(formObj);
+  fetch("api/gallery-like.php",
+    {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(formObj)
+    }
+  ).then(response=>
+  {
+    return response.json();
+  })
+  .then(
+    data=>
+    {
+      likes.textContent=data["likes"];
+      dislikes.textContent=data["dislikes"];
+      console.log(data);
+    }
+  )
+})
+dislike_form.addEventListener("submit",function(e)
+{
+  e.preventDefault();
+  let user_id=document.getElementById("user-d-input").value;
+  let image_id=document.getElementById("dislike-input").value;
+  let status=document.getElementById("dislike-status").value;
+  const formObj={user_id:user_id,image_id:image_id,status:status};
+  fetch("api/gallery-dislike.php",
+    {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(formObj)
+    }).then(response=>
+    {
+      return response.json();
+    })
+    .then(data=>{
+      likes.textContent=data["likes"];
+      dislikes.textContent=data["dislikes"];
+      console.log(data);
+    })
+})
+  }
 
 
 

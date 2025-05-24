@@ -278,7 +278,10 @@ border:none;
 {
 flex:50%;
 }
-
+.flex-33
+{
+    flex:33.3%;
+}
 .flex-100
 {
 flex:100%;
@@ -291,6 +294,10 @@ flex:10%;
 .flex-75
 {
 flex:75%;
+}
+.h-50vh
+{
+height:50vh;
 }
 .relative
 {
@@ -537,14 +544,19 @@ outline:none;
 border:none
 }
 
-
+#delete-placeholder
+{
+overflow:hidden;
+}
 #delete-placeholder img
 {
+display:block;
 width:100%;
 height:100%;
-border-radius:10%;
+object-fit:cover;
 }
 textarea
 {
 resize:none;
 }
+
