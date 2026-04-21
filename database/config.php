@@ -1,7 +1,5 @@
 <?php class Database
 {
-    $env = parse_ini_file(__DIR__ . '/../.env');
-
     private $username = $env["DB_USERNAME"];
     private $password = $env["DB_PASSWORD"];
     private $host = $env["APP_URL"];
@@ -13,6 +11,15 @@
     {
         $this->connection = null;
 
+        public function __construct()
+    {
+        $env = parse_ini_file(__DIR__ . '/../.env');
+
+        $this->username = $env["DB_USERNAME"];
+        $this->password = $env["DB_PASSWORD"];
+        $this->host     = $env["DB_HOST"];
+    }
+    
         try {
 
             $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->dbname;
