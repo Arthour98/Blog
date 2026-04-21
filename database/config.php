@@ -1,9 +1,9 @@
 <?php class Database
 {
-    private $username = $env["DB_USERNAME"];
-    private $password = $env["DB_PASSWORD"];
-    private $host = $env["APP_URL"];
-    private $dbname = "php_project2";
+    private $username = null;
+    private $password = null;
+    private $host = null;
+    private $dbname = null;
 
     private $connection;
 
