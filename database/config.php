@@ -7,11 +7,7 @@
 
     private $connection;
 
-    public function connect()
-    {
-        $this->connection = null;
-
-        public function __construct()
+    public function __construct()
     {
         $env = parse_ini_file(__DIR__ . '/../.env');
 
@@ -19,7 +15,11 @@
         $this->password = $env["DB_PASSWORD"];
         $this->host     = $env["DB_HOST"];
     }
-    
+    public function connect()
+    {
+        $this->connection = null;
+
+
         try {
 
             $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->dbname;
