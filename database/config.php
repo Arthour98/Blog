@@ -5,7 +5,8 @@ class Database
     private $username;
     private $password;
     private $host;
-    private $dbname = "php_project2";
+    private $dbname ;
+    private $port;
 
     private $connection;
 
@@ -14,14 +15,15 @@ class Database
         $this->username = getenv("DB_USERNAME");
         $this->password = getenv("DB_PASSWORD");
         $this->host     = getenv("DB_HOST");
+        $this->port     = getenv("DB_PORT");
+        $this->dbname   = getenv("DB_NAME");
     }
 
     public function connect()
     {
         $this->connection = null;
-
         try {
-            $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8mb4";
+            $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->dbname};charset=utf8mb4";
 
             $this->connection = new PDO(
                 $dsn,
@@ -32,7 +34,8 @@ class Database
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         } catch (PDOException $e) {
-            die("DB ERROR: " . $e->getMessage());
+            return;
+            // die("DB ERROR: " . $e->getMessage());
         }
 
         return $this->connection;
