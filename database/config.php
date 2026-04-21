@@ -1,8 +1,10 @@
 <?php class Database
 {
-    private $username = "root";
-    private $password = "1234";
-    private $host = "localhost";
+    $env = parse_ini_file(__DIR__ . '/../.env');
+
+    private $username = $env["DB_USERNAME"];
+    private $password = $env["DB_PASSWORD"];
+    private $host = $env["APP_URL"];
     private $dbname = "php_project2";
 
     private $connection;
