@@ -14,3 +14,5 @@ WORKDIR /var/www/html
 
 # Fix permissions
 RUN chown -R www-data:www-data /var/www/html
+
+RUN composer install
