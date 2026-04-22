@@ -140,7 +140,7 @@ class Blogs extends Session
 
         if ($status == "like" || $status == "dislike") {
             $sql = "SELECT * FROM blogs_status
-    WHERE content_id=:content_id and user_id=:user_id and status=:status ";
+            WHERE content_id=:content_id and user_id=:user_id and status=:status ";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(":content_id", $content_id);
             $stmt->bindParam(":user_id", $user_id);

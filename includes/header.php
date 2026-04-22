@@ -36,11 +36,10 @@
                             <h3 class="text-light">' . '#' . $user["user_name"] . '</h3>' ?>
                             <?php endif; ?>
                         </div>
-                        <div class="col-xl-5 col-lg-5 col-md-7  col-sm-12 d-flex justify-content-around">
+                        <div class="col-xl-5 col-lg-5 col-md-7  col-sm-12 d-flex gap-3 justify-content-start">
                             <a href="index.php">Home</a>
                             <a href="gallery.php">Gallery</a>
-                            <a href="calendar.php">Games</a>
-                            <a href="quiz.php">Quiz</a>
+
                         </div>
                         <div class="col-xl-5 col-lg-4 col-md-2  col-sm-12 d-flex justify-content-center gap-20">
                             <?php if (!isset($_SESSION["user_id"])): ?>

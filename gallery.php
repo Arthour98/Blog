@@ -92,13 +92,13 @@ if (isset($_SESSION["user_id"])) {
 
                 <form id=" add_image" action="gallery.php"
                     method="post" enctype="multipart/form-data"
-                    class="d-flex w-50 justify-content-between align-items-center
+                    class="d-flex w-60 justify-space-between align-items-center
                     ">
-                    <label for="Upload" class="d-flex flex-column position-relative align-items-center
+                    <label for="Upload" class="d-flex w-100 position-relative  align-items-center justify-content-start
                 " id="label-upload">
                         <input type="file" name="add_image"
-                            id="image-input" class="position-absolute cursor-pointer h-100">
-                        <i class="fa-solid fa-circle-arrow-up upload-icon text-primary "></i>
+                            id="image-input" class="position-absolute  cursor-pointer h-100">
+                        <i class="fa-solid fa-circle-arrow-up upload-icon text-primary"></i>
                     </label>
                     <input type="submit" value="ADD" id="submit-image"
                         class="btn btn-primary" name="add-image">

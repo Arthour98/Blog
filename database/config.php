@@ -1,22 +1,27 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 class Database
 {
+
     private $username;
     private $password;
     private $host;
     private $dbname ;
     private $port;
-
     private $connection;
+  
+        
 
     public function __construct()
     {
-        $this->username = getenv("DB_USERNAME");
-        $this->password = getenv("DB_PASSWORD");
-        $this->host     = getenv("DB_HOST");
-        $this->port     = getenv("DB_PORT");
-        $this->dbname   = getenv("DB_NAME");
+        $this->username = $_ENV["DB_USERNAME"];
+        $this->password = $_ENV["DB_PASSWORD"];
+        $this->host     = $_ENV["DB_HOST"];
+        $this->port     = $_ENV["DB_PORT"];
+        $this->dbname   = $_ENV["DB_NAME"];
     }
 
     public function connect()
@@ -34,8 +39,8 @@ class Database
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         } catch (PDOException $e) {
-            return;
-            // die("DB ERROR: " . $e->getMessage());
+            // return;
+            die("DB ERROR: " . $e->getMessage());
         }
 
         return $this->connection;

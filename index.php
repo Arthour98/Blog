@@ -1,4 +1,5 @@
 <?php
+
 require_once "database/config.php";
 require_once "classes/session.php";
 
@@ -129,12 +130,12 @@ if (isset($_SESSION["user_id"])) {
     <?php unset($_SESSION['successMessage']); ?>
 <?php endif; ?>
 
-<div class="container-fluid m-0 p-0 ">
-    <div class="row height-fill">
+<div class="container-fluid m-0 p-0">
+    <div class="row v-100">
         <!--filtro col-->
         <?php if (isset($user)): ?>
             <div class="filter-col col-xxl-2 col-xl-4  col-lg-4  col-md-5 col-sm-12  p-0 text-light">
-                <div class="blog-filter d-flex flex-column justify-content-end  row-gap-20 p-5 ">
+                <div class="blog-filter d-flex flex-column justify-content-start  row-gap-20 p-5 ">
                     <h3>Search
                         <div class="option d-flex ">
                             <form action="index.php" method="post">
