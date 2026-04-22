@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+$dotenv->safeLoad();
 
 class Database
 {
@@ -17,11 +17,11 @@ class Database
 
     public function __construct()
     {
-        $this->username = $_ENV["DB_USERNAME"];
-        $this->password = $_ENV["DB_PASSWORD"];
-        $this->host     = $_ENV["DB_HOST"];
-        $this->port     = $_ENV["DB_PORT"];
-        $this->dbname   = $_ENV["DB_NAME"];
+$this->host = getenv("DB_HOST") ?: $_ENV["DB_HOST"] ?? null;
+$this->port = getenv("DB_PORT") ?: $_ENV["DB_PORT"] ?? null;
+$this->dbname = getenv("DB_NAME") ?: $_ENV["DB_NAME"] ?? null;
+$this->username = getenv("DB_USERNAME") ?: $_ENV["DB_USERNAME"] ?? null;
+$this->password = getenv("DB_PASSWORD") ?: $_ENV["DB_PASSWORD"] ?? null;
     }
 
     public function connect()
