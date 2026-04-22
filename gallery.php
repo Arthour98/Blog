@@ -5,7 +5,7 @@
 
 use classes\session\Session;
 use classes\gallery\Gallery;
-$env = parse_ini_file(__DIR__ . '/../.env');
+
 $db = new Database();
 $conn = $db->connect();
 $user =  null;

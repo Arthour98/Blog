@@ -52,3 +52,9 @@
                     </div>
                 </div>
             </div>
+            <?php if(($_SERVER["REQUEST_URI"]=="/index.php" || $_SERVER["REQUEST_URI"]=="/gallery.php")
+             && !isset($_SESSION["user_id"]) )
+            {
+                header("location:login.php");
+            }
+                ?>

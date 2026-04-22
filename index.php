@@ -166,7 +166,7 @@ if (isset($_SESSION["user_id"])) {
 
                 </div>
             </div>
-        <?php endif; ?>
+        
         <!--telos filtrou-->
 
         <?php if (isset($_SESSION["user_id"])): ?>
@@ -194,5 +194,6 @@ if (isset($_SESSION["user_id"])) {
 
                 </div>
             </div>
-    </div>
-    <?php include_once "includes/footer.php" ?>
+</div>
+<?php endif; ?>
+<?php include_once "includes/footer.php" ?>
