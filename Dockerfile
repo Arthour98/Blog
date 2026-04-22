@@ -1,18 +1,35 @@
+FROM composer:2 AS composer
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --prefer-dist
+
 FROM php:8.2-apache
 
-# Install PDO MySQL
+RUN apt-get update && apt-get install -y \
+    unzip \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Enable Apache rewrite (useful for APIs later)
 RUN a2enmod rewrite
 
-# Copy project files
-COPY . /var/www/html/
-
-# Set working directory
 WORKDIR /var/www/html
 
-# Fix permissions
+COPY --from=composer /app/vendor /var/www/html/vendor
+
+COPY . /var/www/html
+
 RUN chown -R www-data:www-data /var/www/html
 
-RUN composer install
+EXPOSE 80
+
+CMD ["apache2-foreground"]
